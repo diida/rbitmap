@@ -1,0 +1,1 @@
+java -jar ../target/entry.jar m2f $1 $2

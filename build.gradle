@@ -1,0 +1,76 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'eclipse-wtp'
+
+sourceCompatibility = 1.8   // 设置 JDK 版本
+targetCompatibility = 1.8
+
+ext.lib = '../lib'
+
+repositories {
+	flatDir(dirs: "$projectDir/lib")
+}
+
+// 设置 maven 库地址
+repositories {
+   	//mavenCentral() // 中央库
+   	maven{url 'http://central.maven.org/maven2'}
+   	//maven { url 'http://mirrors.ibiblio.org/pub/mirrors/maven2/' } // 自定义库地址1
+   	//maven { url 'https://repository.jboss.org/nexus/content/groups/public' } // 自定义库地址2
+   	//http://maven.oschina.net/content/groups/public/
+}
+
+dependencies {
+	compile (
+		'junit:junit:4.12',
+		'org.roaringbitmap:RoaringBitmap:0.4.11',
+		//'redis.clients:jedis:2.7.2',
+		//'org.apache.logging.log4j:log4j:2.3',
+		//fileTree(dir: 'lib', include: '*.jar'),
+		//fileTree(dir: 'pack', include: '*.jar')
+	)
+}
+
+sourceSets.main.java.srcDir '$projectDir/src/main/java'   // 设置 Java 源码所在目录
+
+task entry(type:Jar, dependsOn: [compileJava]){
+
+	baseName 'entry'
+	manifest{
+		attributes 'Main-Class': 'rbitmap.util.entry'
+		//Class 在 -jar 方式运行是无效的，本地跑的时候，不要指望这个属性引入jar
+		//attributes 'Class-Path':new File("lib").list().findAll {it.endsWith('.jar') }.collect { lib + "/$it" }.join(':')
+	}
+
+	from 'build/classes/main'
+	def result = []
+	configurations.compile.each {
+		if(!it.isDirectory()) {
+			if(it.toString().contains('.gradle')) {
+				if(it.toString().contains('MANIFEST.MF')){
+					println "exclude: " + it
+				} else {
+					result << zipTree(it)
+				}
+			} else if(it.toString().contains('/pack')) {
+				result << zipTree(it)
+			} else if((mode == '1' || mode == '4') && it.toString().contains('lib')){
+				result << zipTree(it)
+			}
+		}
+	}
+
+	from { result }
+	destinationDir = file('build/libs')
+	exclude('test/', 'BuildConfig.class', 'R.class')
+	//去掉R$开头的文件
+	//exclude{ it.name.contains('$');}
+}
+
+//本地测试
+task run(type: Copy,dependsOn: [entry]){
+    from('build/libs') {
+        include '*.jar'
+    }
+    into ('target')
+}
