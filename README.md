@@ -1,20 +1,24 @@
 rbitmap
 =======
-This is a wrapper around https://github.com/lemire/RoaringBitmap
+This is a command line tool wrapper around https://github.com/lemire/RoaringBitmap.
 
-这是一个基于 https://github.com/lemire/RoaringBitmap 的命令行工具
+这是一个基于 https://github.com/lemire/RoaringBitmap 的命令行工具。
 
 Usage:
 ------
+Read from bitmap binary file limit 3.
+
+从bitmap2进制文件中读取3行数据，注意：如果不带limit 参数，就会读取全部数据，那可能非常庞大。
+
 ```java
 	//read bitmap;读取bitmap
 	./sbin/read test/uid.bitmap 3
 ```
 
-Read from bitmap binary file limit 3.
 Note:It will print all data without limit.
 
-从bitmap2进制文件中读取3行数据，注意：如果不带limit 参数，就会读取全部数据，那可能非常庞大。
+------
+uid.txt必须是每行一个整型数据。
 
 ```java
 	//convent to bitmap;将文件转换为bitmap
@@ -23,11 +27,10 @@ Note:It will print all data without limit.
 	./sbin/bitmapToFile test/uid.bitmap test/uid.txt.bak
 ```
 
-uid.txt必须是每行一个整型数据
+-----
+将uid.bitmap 和uid2.bitmap合并，并写入到uid3.bitmap中
 
 ```java
 	//and or xor;
 	./sbin/and test/uid.bitmap test/uid2.bitmap test/uid3.bitmap
 ```
-
-将uid.bitmap 和uid2.bitmap合并，并写入到uid3.bitmap中
