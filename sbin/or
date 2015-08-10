@@ -1,1 +1,2 @@
-java -jar ../target/entry.jar or $1 $2 $3
+dir=$(cd "$(dirname "$0")"; pwd)
+java -jar ${dir}/../target/entry.jar or $1 $2 $3

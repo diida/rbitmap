@@ -1,1 +1,2 @@
-java -jar ../target/entry.jar read $1 $2
+dir=$(cd "$(dirname "$0")"; pwd)
+java -jar ${dir}/../target/entry.jar read $1 $2
