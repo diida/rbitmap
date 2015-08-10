@@ -2,6 +2,8 @@ rbitmap
 =======
 This is a wrapper around https://github.com/lemire/RoaringBitmap
 
+这是一个基于 https://github.com/lemire/RoaringBitmap 的命令行工具
+
 Usage:
 ------
 ```java
