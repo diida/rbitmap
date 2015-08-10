@@ -208,28 +208,19 @@ public class entry {
 
 	public static void main(String[] args) {
 		String method = args[0];
-		switch (method) {
-		case "f2m":
-		case "fileToBitmap":
+		
+		if(method.equals("f2m") || method.equals("fileToBitmap")) {
 			entry.fileToBitmap(args);
-			break;
-		case "m2f":
-		case "bitmapToFile":
+		} else if(method.equals("m2f") || method.equals("bitmapToFile")) {
 			entry.bitmapToFile(args);
-			break;
-		case "r":
-		case "read":
+		} else if(method.equals("r") || method.equals("read")) {
 			entry.read(args);
-			break;
-		case "and":
+		} else if(method.equals("and")) {
 			entry.bitmapBool(entry.TYPE_AND, args);
-			break;
-		case "or":
+		} else if(method.equals("or")) {
 			entry.bitmapBool(entry.TYPE_OR, args);
-			break;
-		case "xor":
+		} else if(method.equals("xor")) {
 			entry.bitmapBool(entry.TYPE_XOR, args);
-			break;
 		}
 	}
 }
