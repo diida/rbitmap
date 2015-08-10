@@ -37,7 +37,7 @@ public class entry {
 			MutableRoaringBitmap Bitmap) throws Exception {
 		String path = pathInfo.get("path");
 		String filename = pathInfo.get("filename");
-		File tmpfile = new File(filename);
+		File tmpfile = new File(path + "/" + filename);
 		File pathfile = new File(path);
 		pathfile.mkdirs();
 		FileOutputStream fos;
@@ -152,7 +152,10 @@ public class entry {
 			MutableRoaringBitmap bm = entry.read(args[1]);
 
 			File file = new File(args[2]);
-
+			Map<String,String> p = entry.parsePath(args[2]);
+			File pathfile = new File(p.get("path"));
+			pathfile.mkdirs();
+			
 			if (!file.exists()) {
 				file.createNewFile();
 			}
