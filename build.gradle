@@ -2,8 +2,8 @@ apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'eclipse-wtp'
 
-sourceCompatibility = 1.6   // 设置 JDK 版本
-targetCompatibility = 1.6
+sourceCompatibility = 1.7   // 设置 JDK 版本
+targetCompatibility = 1.7
 
 ext.lib = '../lib'
 

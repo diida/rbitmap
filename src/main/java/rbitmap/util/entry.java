@@ -73,7 +73,7 @@ public class entry {
 	 * @return
 	 */
 	public static Map<String, String> parsePath(String path) {
-		if (!path.matches("^/")) {
+		if (!path.matches("^/.*")) {
 			path = System.getProperty("user.dir") + "/" + path;
 		}
 		Map<String, String> pathInfo = new HashMap<String, String>();
@@ -98,11 +98,15 @@ public class entry {
 
 			String line = reader.readLine();
 			while (line != null) {
-				bm.add(Integer.parseInt(line));
+				line = line.trim();
+				if (line.length() > 0) {
+					bm.add(Integer.parseInt(line));
+				}
 				line = reader.readLine();
 			}
 
-		} catch (Exception ex) {
+		} catch (Exception e) {
+			e.printStackTrace();
 			return null;
 		}
 
@@ -126,7 +130,7 @@ public class entry {
 		try {
 			bm = entry.read(args[1]);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
 			return;
 		}
 
@@ -152,10 +156,10 @@ public class entry {
 			MutableRoaringBitmap bm = entry.read(args[1]);
 
 			File file = new File(args[2]);
-			Map<String,String> p = entry.parsePath(args[2]);
+			Map<String, String> p = entry.parsePath(args[2]);
 			File pathfile = new File(p.get("path"));
 			pathfile.mkdirs();
-			
+
 			if (!file.exists()) {
 				file.createNewFile();
 			}
@@ -211,18 +215,18 @@ public class entry {
 
 	public static void main(String[] args) {
 		String method = args[0];
-		
-		if(method.equals("f2m") || method.equals("fileToBitmap")) {
+
+		if (method.equals("f2m") || method.equals("fileToBitmap")) {
 			entry.fileToBitmap(args);
-		} else if(method.equals("m2f") || method.equals("bitmapToFile")) {
+		} else if (method.equals("m2f") || method.equals("bitmapToFile")) {
 			entry.bitmapToFile(args);
-		} else if(method.equals("r") || method.equals("read")) {
+		} else if (method.equals("r") || method.equals("read")) {
 			entry.read(args);
-		} else if(method.equals("and")) {
+		} else if (method.equals("and")) {
 			entry.bitmapBool(entry.TYPE_AND, args);
-		} else if(method.equals("or")) {
+		} else if (method.equals("or")) {
 			entry.bitmapBool(entry.TYPE_OR, args);
-		} else if(method.equals("xor")) {
+		} else if (method.equals("xor")) {
 			entry.bitmapBool(entry.TYPE_XOR, args);
 		}
 	}
