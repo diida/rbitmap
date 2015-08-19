@@ -180,12 +180,9 @@ public class entry {
 	}
 
 	public static void bitmapBool(int type, String[] args) {
-		MutableRoaringBitmap b1;
 		try {
-			b1 = entry.read(args[1]);
-
+			MutableRoaringBitmap b1 = entry.read(args[1]);
 			MutableRoaringBitmap b2 = entry.read(args[2]);
-
 			switch (type) {
 			case entry.TYPE_AND:
 				b1.and(b2);
@@ -203,11 +200,25 @@ public class entry {
 				entry.save(entry.parsePath(args[3]), b1);
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
+
+	private static void bitmapNew(String[] args) {
+		try {
+			MutableRoaringBitmap b1 = entry.read(args[1]);
+			MutableRoaringBitmap b2 = entry.read(args[2]);
+			b2.andNot(b1);
+			entry.output(b2);
+			if (args.length == 4 && args[3] != null && args[3].length() > 0) {
+				entry.save(entry.parsePath(args[3]), b2);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public static void output(MutableRoaringBitmap bm) {
 		System.out.println("总数：" + bm.getCardinality());
 		System.out.println("体积：" + bm.getSizeInBytes() + "Byte");
@@ -228,6 +239,9 @@ public class entry {
 			entry.bitmapBool(entry.TYPE_OR, args);
 		} else if (method.equals("xor")) {
 			entry.bitmapBool(entry.TYPE_XOR, args);
+		} else if (method.equals("new")) {
+			entry.bitmapNew(args);
 		}
 	}
+
 }
